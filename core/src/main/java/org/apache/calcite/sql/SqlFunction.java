@@ -19,6 +19,7 @@ package org.apache.calcite.sql;
 import org.apache.calcite.linq4j.function.Functions;
 import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.rel.type.RelDataTypeFactory;
+import org.apache.calcite.sql.fun.SqlCastFunction;
 import org.apache.calcite.sql.parser.SqlParserPos;
 import org.apache.calcite.sql.parser.SqlParserUtil;
 import org.apache.calcite.sql.type.OperandTypes;
@@ -263,11 +264,17 @@ public class SqlFunction extends SqlOperator {
     final List<RelDataType> argTypes = constructArgTypeList(validator, scope,
         call, args, convertRowArgToColumnList);
 
-    SqlFunction function =
-        (SqlFunction) SqlUtil.lookupRoutine(validator.getOperatorTable(),
-            validator.getTypeFactory(), getNameAsId(), argTypes, argNames,
-            getFunctionType(), SqlSyntax.FUNCTION, getKind(),
-            validator.getCatalogReader().nameMatcher(), false);
+    SqlFunction function = null;
+    if(call instanceof SqlBasicCall && ((SqlBasicCall) call).getOperator() instanceof SqlCastFunction) {
+        function = new SqlCastFunction();
+        function.setCallContext(((SqlBasicCall) call).getOperator().getCallContext());
+    } else {
+        function = (SqlFunction) SqlUtil.lookupRoutine(validator.getOperatorTable(),
+                validator.getTypeFactory(), getNameAsId(), argTypes, argNames,
+                getFunctionType(), SqlSyntax.FUNCTION, getKind(),
+                validator.getCatalogReader().nameMatcher(), false);
+    }
+
     try {
       // if we have a match on function name and parameter count, but
       // couldn't find a function with  a COLUMN_LIST type, retry, but

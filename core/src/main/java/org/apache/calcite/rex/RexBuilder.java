@@ -34,6 +34,7 @@ import org.apache.calcite.sql.SqlKind;
 import org.apache.calcite.sql.SqlOperator;
 import org.apache.calcite.sql.SqlSpecialOperator;
 import org.apache.calcite.sql.SqlUtil;
+import org.apache.calcite.sql.fun.SqlCastFunction;
 import org.apache.calcite.sql.fun.SqlCountAggFunction;
 import org.apache.calcite.sql.fun.SqlStdOperatorTable;
 import org.apache.calcite.sql.type.ArraySqlType;
@@ -841,7 +842,7 @@ public class RexBuilder {
       RexNode exp) {
     return new RexCall(
         type,
-        SqlStdOperatorTable.CAST,
+        new SqlCastFunction(),
         ImmutableList.of(exp));
   }
 
