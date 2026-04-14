@@ -705,7 +705,7 @@ public abstract class OperandTypes {
    * binary string (CHAR, VARCHAR, BINARY or VARBINARY), and the second operand
    * is INTEGER. */
   public static final SqlSingleOperandTypeChecker CBSTRING_INTEGER =
-      family(SqlTypeFamily.STRING, SqlTypeFamily.INTEGER)
+      family(SqlTypeFamily.STRING, SqlTypeFamily.NUMERIC)
           .or(family(SqlTypeFamily.BINARY, SqlTypeFamily.INTEGER));
 
   /**

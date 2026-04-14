@@ -538,7 +538,7 @@ public abstract class SqlLibraryOperators {
   public static final SqlFunction REPEAT =
       SqlBasicFunction.create("REPEAT",
           ReturnTypes.ARG0_NULLABLE_VARYING,
-          OperandTypes.STRING_INTEGER,
+          OperandTypes.STRING_NUMERIC,
           SqlFunctionCategory.STRING);
 
   @LibraryOperator(libraries = {BIG_QUERY, MYSQL, POSTGRESQL})
